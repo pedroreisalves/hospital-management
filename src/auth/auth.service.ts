@@ -1,18 +1,32 @@
+import { PrismaService } from './../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { JwtPayload } from './models/jwt-payload.model';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly prismaService: PrismaService,
+  ) {}
 
   public async createAccessToken(jwtPayload: JwtPayload): Promise<string> {
     return this.jwtService.sign(jwtPayload);
   }
 
   public async validateUser(jwtPayload: JwtPayload) {
-    return jwtPayload;
+    const user = await this.prismaService[
+      jwtPayload.role.toLowerCase()
+    ].findUnique({
+      where: { id: jwtPayload.id },
+    });
+    if (!user) throw new BadRequestException('Invalid token.');
+    return user;
   }
 
   public returnJwtExtractor(): (request: Request) => string {
@@ -24,6 +38,6 @@ export class AuthService {
     if (!token) {
       throw new NotFoundException('Token not found');
     }
-    return token;
+    return token.split(' ')[1];
   }
 }
