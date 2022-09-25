@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Specialty {
+  id      Int      @id @default(autoincrement())
+  title   String
+  doctors Doctor[]
+}
+
+model Room {
+  id               Int               @id @default(autoincrement())
+  available        Boolean
+  hospitalizations Hospitalization[]
+}
+
+model Bill {
+  id        Int      @id @default(autoincrement())
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  patientId Int
+  amount    Float
+  date      DateTime
+}
+
+model Nurse {
+  id          Int      @id @default(autoincrement())
+  fullName    String
+  dateOfBirth DateTime
+  gender      Gender
+  address     String
+}
+
+model Doctor {
+  id                  Int                  @id @default(autoincrement())
+  fullName            String
+  dateOfBirth         DateTime
+  gender              Gender
+  address             String
+  specialty           Specialty            @relation(fields: [specialtyId], references: [id])
+  specialtyId         Int
+  medicalAppointments MedicalAppointment[]
+}
+
+model Patient {
+  id                  Int                  @id @default(autoincrement())
+  fullName            String
+  dateOfBirth         DateTime
+  gender              Gender
+  address             String
+  bills               Bill[]
+  hospitalizations    Hospitalization[]
+  medicalAppointments MedicalAppointment[]
+}
+
+model Receptionist {
+  id          Int      @id @default(autoincrement())
+  fullName    String
+  dateOfBirth DateTime
+  gender      Gender
+  address     String
+}
+
+model Hospitalization {
+  id        Int       @id @default(autoincrement())
+  entryDate DateTime
+  leaveDate DateTime?
+  patient   Patient   @relation(fields: [patientId], references: [id])
+  patientId Int
+  room      Room      @relation(fields: [roomId], references: [id])
+  roomId    Int
+}
+
+model MedicalAppointment {
+  doctor    Doctor   @relation(fields: [doctorId], references: [id])
+  doctorId  Int
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  patientId Int
+  date      DateTime
+
+  @@id([doctorId, patientId])
+}
+
+enum Gender {
+  Masculine
+  Feminine
+}
