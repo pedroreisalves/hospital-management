@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  backend:
+    build: .
+    entrypoint: .docker/entrypoint.sh
+    container_name: project-hospital-management-back-end
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/home/node/app
+    depends_on:
+      - database
+
+  database:
+    build: .docker/postgres
+    container_name: project-hospital-management-database
+    restart: always
+    tty: true
+    ports:
+      - 5432:5432
+    volumes:
+      - .docker/dbdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=12345678
+      - POSTGRES_DB=HospitalManagement
