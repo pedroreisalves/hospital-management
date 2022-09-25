@@ -33,6 +33,8 @@ model Bill {
 model Nurse {
   id          Int      @id @default(autoincrement())
   fullName    String
+  email       String
+  password    String
   dateOfBirth DateTime
   gender      Gender
   address     String
@@ -42,6 +44,8 @@ model Doctor {
   id                  Int                  @id @default(autoincrement())
   fullName            String
   dateOfBirth         DateTime
+  email               String
+  password            String
   gender              Gender
   address             String
   specialty           Specialty            @relation(fields: [specialtyId], references: [id])
@@ -64,6 +68,8 @@ model Receptionist {
   id          Int      @id @default(autoincrement())
   fullName    String
   dateOfBirth DateTime
+  email       String
+  password    String
   gender      Gender
   address     String
 }
@@ -89,6 +95,6 @@ model MedicalAppointment {
 }
 
 enum Gender {
-  Masculine
-  Feminine
+  MASCULINE
+  FEMININE
 }
