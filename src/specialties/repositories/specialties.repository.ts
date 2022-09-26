@@ -38,7 +38,7 @@ export class SpecialtiesRepository {
       where: { id },
     });
     if (!specialty) throw new NotFoundException('Specialty not found.');
-    return specialty;
+    return id;
   }
 
   public async validateSpecialtyTitle(title: string) {
@@ -49,6 +49,6 @@ export class SpecialtiesRepository {
       throw new NotFoundException(
         'A specialty with that title already exists.',
       );
-    return true;
+    return title;
   }
 }

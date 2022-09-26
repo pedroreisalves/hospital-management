@@ -38,7 +38,7 @@ export class DoctorsRepository {
       where: { id },
     });
     if (!specialty) throw new NotFoundException('Specialty not found.');
-    return specialty;
+    return id;
   }
 
   public async validateDoctorId(id: number) {
@@ -46,6 +46,6 @@ export class DoctorsRepository {
       where: { id },
     });
     if (!doctor) throw new NotFoundException('Doctor not found.');
-    return doctor;
+    return id;
   }
 }
