@@ -8,7 +8,7 @@ export class DoctorsRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   public async create(createDoctorDto: CreateDoctorDto) {
-    await this.prismaService.doctor.create({ data: createDoctorDto });
+    return this.prismaService.doctor.create({ data: createDoctorDto });
   }
 
   public async findAll() {
