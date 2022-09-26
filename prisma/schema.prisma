@@ -85,13 +85,12 @@ model Hospitalization {
 }
 
 model MedicalAppointment {
+  id        Int      @id @default(autoincrement())
   doctor    Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   doctorId  Int
   patient   Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   patientId Int
   date      DateTime @db.Date
-
-  @@id([doctorId, patientId])
 }
 
 enum Gender {
