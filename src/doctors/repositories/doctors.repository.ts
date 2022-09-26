@@ -16,7 +16,10 @@ export class DoctorsRepository {
   }
 
   public async findOne(id: number) {
-    return this.prismaService.doctor.findUnique({ where: { id } });
+    return this.prismaService.doctor.findUnique({
+      where: { id },
+      include: { medicalAppointments: true, specialty: true },
+    });
   }
 
   public async update(id: number, updateDoctorDto: UpdateDoctorDto) {
