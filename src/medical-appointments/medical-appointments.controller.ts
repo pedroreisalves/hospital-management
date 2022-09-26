@@ -39,6 +39,7 @@ export class MedicalAppointmentsController {
 
   @Delete(':id')
   public async remove(@Param('id') id: string) {
-    return this.medicalAppointmentsService.remove(+id);
+    await this.medicalAppointmentsService.remove(+id);
+    return { message: `Medical appointment with ID #${id} has been removed.` };
   }
 }
