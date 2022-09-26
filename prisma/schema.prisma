@@ -24,7 +24,7 @@ model Room {
 
 model Bill {
   id        Int      @id @default(autoincrement())
-  patient   Patient  @relation(fields: [patientId], references: [id])
+  patient   Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   patientId Int
   amount    Float
   date      DateTime @db.Date
@@ -48,7 +48,7 @@ model Doctor {
   password            String
   gender              Gender
   address             String
-  specialty           Specialty            @relation(fields: [specialtyId], references: [id])
+  specialty           Specialty            @relation(fields: [specialtyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   specialtyId         Int
   medicalAppointments MedicalAppointment[]
 }
@@ -78,16 +78,16 @@ model Hospitalization {
   id        Int       @id @default(autoincrement())
   entryDate DateTime  @db.Date
   leaveDate DateTime? @db.Date
-  patient   Patient   @relation(fields: [patientId], references: [id])
+  patient   Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   patientId Int
-  room      Room      @relation(fields: [roomId], references: [id])
+  room      Room      @relation(fields: [roomId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   roomId    Int
 }
 
 model MedicalAppointment {
-  doctor    Doctor   @relation(fields: [doctorId], references: [id])
+  doctor    Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   doctorId  Int
-  patient   Patient  @relation(fields: [patientId], references: [id])
+  patient   Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   patientId Int
   date      DateTime @db.Date
 
