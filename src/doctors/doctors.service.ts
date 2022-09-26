@@ -12,6 +12,7 @@ export class DoctorsService {
     await this.doctorsRepostory.validateSpecialtyId(
       createDoctorDto.specialtyId,
     );
+    await this.doctorsRepostory.validateDoctorEmail(createDoctorDto.email);
     createDoctorDto.dateOfBirth += 'T00:00:00.000Z';
     createDoctorDto.password = await bcrypt.hash(createDoctorDto.password, 10);
     return this.doctorsRepostory.create(createDoctorDto);
@@ -39,6 +40,8 @@ export class DoctorsService {
       );
     if (updateDoctorDto.dateOfBirth)
       updateDoctorDto.dateOfBirth += 'T00:00:00.000Z';
+    if (updateDoctorDto.email)
+      await this.doctorsRepostory.validateDoctorEmail(updateDoctorDto.email);
     return this.doctorsRepostory.update(id, updateDoctorDto);
   }
 

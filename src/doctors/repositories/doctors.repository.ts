@@ -1,5 +1,9 @@
 import { PrismaService } from './../../prisma/prisma.service';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { CreateDoctorDto } from '../dto/create-doctor.dto';
 import { UpdateDoctorDto } from '../dto/update-doctor.dto';
 
@@ -47,5 +51,14 @@ export class DoctorsRepository {
     });
     if (!doctor) throw new NotFoundException('Doctor not found.');
     return id;
+  }
+
+  public async validateDoctorEmail(email: string, id?: number) {
+    const doctor = await this.prismaService.doctor.findUnique({
+      where: { email },
+    });
+    if (doctor && doctor?.id !== id)
+      throw new BadRequestException('A doctor with that email already exists.');
+    return email;
   }
 }
