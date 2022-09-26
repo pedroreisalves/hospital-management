@@ -10,6 +10,7 @@ import { ReceptionistsModule } from './receptionists/receptionists.module';
 import { NursesModule } from './nurses/nurses.module';
 import { BillsModule } from './bills/bills.module';
 import { HospitalizationsModule } from './hospitalizations/hospitalizations.module';
+import { RoomsModule } from './rooms/rooms.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { HospitalizationsModule } from './hospitalizations/hospitalizations.modu
     NursesModule,
     BillsModule,
     HospitalizationsModule,
+    RoomsModule,
   ],
   controllers: [],
   providers: [],
