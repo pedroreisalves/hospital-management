@@ -1,26 +1,42 @@
+import { DoctorsRepository } from './repositories/doctors.repository';
 import { Injectable } from '@nestjs/common';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
 
 @Injectable()
 export class DoctorsService {
-  create(createDoctorDto: CreateDoctorDto) {
-    return 'This action adds a new doctor';
+  constructor(private readonly doctorsRepostory: DoctorsRepository) {}
+
+  public async create(createDoctorDto: CreateDoctorDto) {
+    await this.doctorsRepostory.validateSpecialtyId(
+      createDoctorDto.specialtyId,
+    );
+    createDoctorDto.dateOfBirth += 'T00:00:00.000Z';
+    return this.doctorsRepostory.create(createDoctorDto);
   }
 
-  findAll() {
-    return `This action returns all doctors`;
+  public async findAll() {
+    return this.doctorsRepostory.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} doctor`;
+  public async findOne(id: number) {
+    await this.doctorsRepostory.validateDoctorId(id);
+    return this.doctorsRepostory.findOne(id);
   }
 
-  update(id: number, updateDoctorDto: UpdateDoctorDto) {
-    return `This action updates a #${id} doctor`;
+  public async update(id: number, updateDoctorDto: UpdateDoctorDto) {
+    await this.doctorsRepostory.validateDoctorId(id);
+    if (updateDoctorDto.specialtyId)
+      await this.doctorsRepostory.validateSpecialtyId(
+        updateDoctorDto.specialtyId,
+      );
+    if (updateDoctorDto.dateOfBirth)
+      updateDoctorDto.dateOfBirth += 'T00:00:00.000Z';
+    return this.doctorsRepostory.update(id, updateDoctorDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} doctor`;
+  public async remove(id: number) {
+    await this.doctorsRepostory.validateDoctorId(id);
+    return this.doctorsRepostory.remove(id);
   }
 }

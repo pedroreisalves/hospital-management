@@ -8,11 +8,6 @@ import {
   MinLength,
 } from 'class-validator';
 
-// export enum Gender {
-//   MASCULINE = 'MASCULINE',
-//   FEMININE = 'FEMININE',
-// }
-
 export class CreateDoctorDto {
   @IsString()
   @MinLength(10)

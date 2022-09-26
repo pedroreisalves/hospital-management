@@ -16,27 +16,31 @@ export class DoctorsController {
   constructor(private readonly doctorsService: DoctorsService) {}
 
   @Post()
-  create(@Body() createDoctorDto: CreateDoctorDto) {
+  public async create(@Body() createDoctorDto: CreateDoctorDto) {
     return this.doctorsService.create(createDoctorDto);
   }
 
   @Get()
-  findAll() {
+  public async findAll() {
     return this.doctorsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  public async findOne(@Param('id') id: string) {
     return this.doctorsService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDoctorDto: UpdateDoctorDto) {
+  public async update(
+    @Param('id') id: string,
+    @Body() updateDoctorDto: UpdateDoctorDto,
+  ) {
     return this.doctorsService.update(+id, updateDoctorDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.doctorsService.remove(+id);
+  public async remove(@Param('id') id: string) {
+    await this.doctorsService.remove(+id);
+    return { message: `Doctor with ID #${id} has been removed.` };
   }
 }
