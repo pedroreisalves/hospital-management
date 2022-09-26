@@ -33,7 +33,7 @@ model Bill {
 model Nurse {
   id          Int      @id @default(autoincrement())
   fullName    String
-  email       String
+  email       String   @unique
   password    String
   dateOfBirth DateTime @db.Date
   gender      Gender
@@ -44,7 +44,7 @@ model Doctor {
   id                  Int                  @id @default(autoincrement())
   fullName            String
   dateOfBirth         DateTime             @db.Date
-  email               String
+  email               String               @unique
   password            String
   gender              Gender
   address             String
@@ -68,7 +68,7 @@ model Receptionist {
   id          Int      @id @default(autoincrement())
   fullName    String
   dateOfBirth DateTime @db.Date
-  email       String
+  email       String   @unique
   password    String
   gender      Gender
   address     String
