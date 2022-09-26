@@ -27,7 +27,7 @@ model Bill {
   patient   Patient  @relation(fields: [patientId], references: [id])
   patientId Int
   amount    Float
-  date      DateTime
+  date      DateTime @db.Date
 }
 
 model Nurse {
@@ -35,7 +35,7 @@ model Nurse {
   fullName    String
   email       String
   password    String
-  dateOfBirth DateTime
+  dateOfBirth DateTime @db.Date
   gender      Gender
   address     String
 }
@@ -43,7 +43,7 @@ model Nurse {
 model Doctor {
   id                  Int                  @id @default(autoincrement())
   fullName            String
-  dateOfBirth         DateTime
+  dateOfBirth         DateTime             @db.Date
   email               String
   password            String
   gender              Gender
@@ -56,7 +56,7 @@ model Doctor {
 model Patient {
   id                  Int                  @id @default(autoincrement())
   fullName            String
-  dateOfBirth         DateTime
+  dateOfBirth         DateTime             @db.Date
   gender              Gender
   address             String
   bills               Bill[]
@@ -67,7 +67,7 @@ model Patient {
 model Receptionist {
   id          Int      @id @default(autoincrement())
   fullName    String
-  dateOfBirth DateTime
+  dateOfBirth DateTime @db.Date
   email       String
   password    String
   gender      Gender
@@ -76,8 +76,8 @@ model Receptionist {
 
 model Hospitalization {
   id        Int       @id @default(autoincrement())
-  entryDate DateTime
-  leaveDate DateTime?
+  entryDate DateTime  @db.Date
+  leaveDate DateTime? @db.Date
   patient   Patient   @relation(fields: [patientId], references: [id])
   patientId Int
   room      Room      @relation(fields: [roomId], references: [id])
@@ -89,7 +89,7 @@ model MedicalAppointment {
   doctorId  Int
   patient   Patient  @relation(fields: [patientId], references: [id])
   patientId Int
-  date      DateTime
+  date      DateTime @db.Date
 
   @@id([doctorId, patientId])
 }
