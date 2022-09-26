@@ -43,6 +43,7 @@ export class PatientsController {
 
   @Delete(':id')
   public async remove(@Param('id') id: string) {
-    return this.patientsService.remove(+id);
+    await this.patientsService.remove(+id);
+    return { message: `Patient with ID #${id} has been removed.` };
   }
 }
