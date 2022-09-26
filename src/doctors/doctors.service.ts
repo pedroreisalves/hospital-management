@@ -2,6 +2,7 @@ import { DoctorsRepository } from './repositories/doctors.repository';
 import { Injectable } from '@nestjs/common';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class DoctorsService {
@@ -12,6 +13,7 @@ export class DoctorsService {
       createDoctorDto.specialtyId,
     );
     createDoctorDto.dateOfBirth += 'T00:00:00.000Z';
+    createDoctorDto.password = await bcrypt.hash(createDoctorDto.password, 10);
     return this.doctorsRepostory.create(createDoctorDto);
   }
 
@@ -29,6 +31,11 @@ export class DoctorsService {
     if (updateDoctorDto.specialtyId)
       await this.doctorsRepostory.validateSpecialtyId(
         updateDoctorDto.specialtyId,
+      );
+    if (updateDoctorDto.password)
+      updateDoctorDto.password = await bcrypt.hash(
+        updateDoctorDto.password,
+        10,
       );
     if (updateDoctorDto.dateOfBirth)
       updateDoctorDto.dateOfBirth += 'T00:00:00.000Z';

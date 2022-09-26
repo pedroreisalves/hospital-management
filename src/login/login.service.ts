@@ -6,6 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class LoginService {
@@ -28,7 +29,11 @@ export class LoginService {
     if (!emailValidation) {
       throw new NotFoundException('Invalid email.');
     }
-    if (emailValidation.password !== loginDto.password) {
+    const match = await bcrypt.compare(
+      loginDto.password,
+      emailValidation.password,
+    );
+    if (!match) {
       throw new BadRequestException('Invalid password.');
     }
     return emailValidation.id;
