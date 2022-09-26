@@ -43,7 +43,7 @@ export class ReceptionistsRepository {
     const receptionist = await this.prismaService.receptionist.findUnique({
       where: { id },
     });
-    if (!receptionist) throw new NotFoundException('Receptionist not found');
+    if (!receptionist) throw new NotFoundException('Receptionist not found.');
     return id;
   }
 
