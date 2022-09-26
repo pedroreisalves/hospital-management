@@ -12,7 +12,7 @@ datasource db {
 
 model Specialty {
   id      Int      @id @default(autoincrement())
-  title   String
+  title   String   @unique
   doctors Doctor[]
 }
 
