@@ -19,7 +19,7 @@ export class PatientsService {
 
   public async findOne(id: number) {
     const patient = await this.patientsRepository.findOne(id);
-    if (!patient) throw new NotFoundError('Patient not found');
+    if (!patient) throw new NotFoundError('Patient not found.');
     return patient;
   }
 
