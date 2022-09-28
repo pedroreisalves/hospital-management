@@ -1,3 +1,4 @@
+import { NotFoundError } from './../common/errors/types/NotFoundError';
 import { ReceptionistsRepository } from './repositories/receptionists.repository';
 import { Injectable } from '@nestjs/common';
 import { CreateReceptionistDto } from './dto/create-receptionist.dto';
@@ -11,9 +12,6 @@ export class ReceptionistsService {
   ) {}
 
   public async create(createReceptionistDto: CreateReceptionistDto) {
-    await this.receptionistsRepository.validateReceptionistEmail(
-      createReceptionistDto.email,
-    );
     createReceptionistDto.password = await bcrypt.hash(
       createReceptionistDto.password,
       10,
@@ -27,22 +25,17 @@ export class ReceptionistsService {
   }
 
   public async findOne(id: number) {
-    await this.receptionistsRepository.validateReceptionistId(id);
-    return this.receptionistsRepository.findOne(id);
+    const receptionist = await this.receptionistsRepository.findOne(id);
+    if (!receptionist) throw new NotFoundError('Receptionist not found.');
   }
 
   public async update(
     id: number,
     updateReceptionistDto: UpdateReceptionistDto,
   ) {
-    await this.receptionistsRepository.validateReceptionistId(id);
+    await this.findOne(id);
     if (updateReceptionistDto.dateOfBirth)
       updateReceptionistDto.dateOfBirth += 'T00:00:00.000Z';
-    if (updateReceptionistDto.email)
-      await this.receptionistsRepository.validateReceptionistEmail(
-        updateReceptionistDto.email,
-        id,
-      );
     if (updateReceptionistDto.password)
       updateReceptionistDto.password = await bcrypt.hash(
         updateReceptionistDto.password,
@@ -52,7 +45,7 @@ export class ReceptionistsService {
   }
 
   public async remove(id: number) {
-    await this.receptionistsRepository.validateReceptionistId(id);
+    await this.findOne(id);
     return this.receptionistsRepository.remove(id);
   }
 }
