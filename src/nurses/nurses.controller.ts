@@ -1,3 +1,4 @@
+import { AuthGuard } from '@nestjs/passport';
 import {
   Controller,
   Get,
@@ -6,12 +7,14 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { NursesService } from './nurses.service';
 import { CreateNurseDto } from './dto/create-nurse.dto';
 import { UpdateNurseDto } from './dto/update-nurse.dto';
 
 @Controller('nurses')
+@UseGuards(AuthGuard('jwt'))
 export class NursesController {
   constructor(private readonly nursesService: NursesService) {}
 
