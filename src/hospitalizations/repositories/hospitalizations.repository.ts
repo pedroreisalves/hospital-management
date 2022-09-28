@@ -34,4 +34,12 @@ export class HospitalizationsRepository {
   public async remove(id: number) {
     return this.prismaService.hospitalization.delete({ where: { id } });
   }
+
+  public async validateRoom(id: number) {
+    const room = await this.prismaService.room.findUnique({
+      where: { id },
+    });
+    if (!room) return null;
+    return room.available;
+  }
 }

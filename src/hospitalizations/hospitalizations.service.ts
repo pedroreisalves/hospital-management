@@ -1,3 +1,4 @@
+import { BadRequestError } from './../common/errors/types/BadRequestError';
 import { NotFoundError } from './../common/errors/types/NotFoundError';
 import { HospitalizationsRepository } from './repositories/hospitalizations.repository';
 import { Injectable } from '@nestjs/common';
@@ -12,6 +13,7 @@ export class HospitalizationsService {
 
   public async create(createHospitalizationDto: CreateHospitalizationDto) {
     createHospitalizationDto.entryDate += 'T00:00:00.000Z';
+    await this.validateRoom(createHospitalizationDto.roomId);
     if (createHospitalizationDto.leaveDate)
       createHospitalizationDto.leaveDate += 'T00:00:00.000Z';
     return this.hospitalizationsRepository.create(createHospitalizationDto);
@@ -34,6 +36,8 @@ export class HospitalizationsService {
     updateHospitalizationDto: UpdateHospitalizationDto,
   ) {
     await this.findOne(id);
+    if (updateHospitalizationDto.roomId)
+      await this.validateRoom(updateHospitalizationDto.roomId);
     if (updateHospitalizationDto.entryDate)
       updateHospitalizationDto.entryDate += 'T00:00:00.000Z';
     if (updateHospitalizationDto.leaveDate)
@@ -44,5 +48,13 @@ export class HospitalizationsService {
   public async remove(id: number) {
     await this.findOne(id);
     return this.hospitalizationsRepository.remove(id);
+  }
+
+  private async validateRoom(id: number) {
+    const validation = await this.hospitalizationsRepository.validateRoom(id);
+    if (validation === null) throw new NotFoundError('Room not found.');
+    if (validation === false)
+      throw new BadRequestError('Room is not available.');
+    return true;
   }
 }
