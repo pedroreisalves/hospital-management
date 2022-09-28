@@ -32,23 +32,4 @@ export class SpecialtiesRepository {
   public async remove(id: number) {
     return this.prismaService.specialty.delete({ where: { id } });
   }
-
-  public async validateSpecialtyId(id: number) {
-    const specialty = await this.prismaService.specialty.findUnique({
-      where: { id },
-    });
-    if (!specialty) throw new NotFoundException('Specialty not found.');
-    return id;
-  }
-
-  public async validateSpecialtyTitle(title: string) {
-    const specialty = await this.prismaService.specialty.findUnique({
-      where: { title },
-    });
-    if (specialty)
-      throw new NotFoundException(
-        'A specialty with that title already exists.',
-      );
-    return title;
-  }
 }

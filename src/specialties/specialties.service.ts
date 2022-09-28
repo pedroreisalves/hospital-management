@@ -8,9 +8,6 @@ export class SpecialtiesService {
   constructor(private readonly specialtiesRepository: SpecialtiesRepository) {}
 
   public async create(createSpecialtyDto: CreateSpecialtyDto) {
-    await this.specialtiesRepository.validateSpecialtyTitle(
-      createSpecialtyDto.title,
-    );
     return this.specialtiesRepository.create(createSpecialtyDto);
   }
 
@@ -19,21 +16,18 @@ export class SpecialtiesService {
   }
 
   public async findOne(id: number) {
-    await this.specialtiesRepository.validateSpecialtyId(id);
-    return this.specialtiesRepository.findOne(id);
+    const specialty = await this.specialtiesRepository.findOne(id);
+    if (!specialty) throw new Error('Specialty not found.');
+    return specialty;
   }
 
   public async update(id: number, updateSpecialtyDto: UpdateSpecialtyDto) {
-    await this.specialtiesRepository.validateSpecialtyId(id);
-    if (updateSpecialtyDto.title)
-      await this.specialtiesRepository.validateSpecialtyTitle(
-        updateSpecialtyDto.title,
-      );
+    await this.findOne(id);
     return this.specialtiesRepository.update(id, updateSpecialtyDto);
   }
 
   public async remove(id: number) {
-    await this.specialtiesRepository.validateSpecialtyId(id);
+    await this.findOne(id);
     return this.specialtiesRepository.remove(id);
   }
 }
