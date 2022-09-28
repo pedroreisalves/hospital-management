@@ -36,7 +36,7 @@ export class AuthService {
   private static jwtExtractor(request: Request): string {
     const { authorization: token } = request.headers;
     if (!token) {
-      throw new NotFoundException('Token not found');
+      throw new NotFoundException('Token not found.');
     }
     return token.split(' ')[1];
   }
