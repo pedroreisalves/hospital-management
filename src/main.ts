@@ -1,3 +1,7 @@
+import { NotFoundInterceptor } from './common/errors/interceptors/not-found.interceptor';
+import { BadRequestInterceptor } from './common/errors/interceptors/bad-request.interceptor';
+import { DatabaseInterceptor } from './common/errors/interceptors/database.interceptor';
+import { ConflictInterceptor } from './common/errors/interceptors/conflict.interceptor';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -14,6 +18,10 @@ async function bootstrap() {
     }),
   );
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalInterceptors(new ConflictInterceptor());
+  app.useGlobalInterceptors(new BadRequestInterceptor());
+  app.useGlobalInterceptors(new NotFoundInterceptor());
+  app.useGlobalInterceptors(new DatabaseInterceptor());
   await app.listen(PORT);
 }
 bootstrap();
