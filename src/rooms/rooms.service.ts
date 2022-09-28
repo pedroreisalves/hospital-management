@@ -1,3 +1,4 @@
+import { NotFoundError } from './../common/errors/types/NotFoundError';
 import { RoomsRepository } from './repositories/rooms.repository';
 import { Injectable } from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
@@ -16,17 +17,17 @@ export class RoomsService {
   }
 
   public async findOne(id: number) {
-    await this.roomsRepository.validateRoomId(id);
-    return this.roomsRepository.findOne(id);
+    const room = await this.roomsRepository.findOne(id);
+    if (!room) throw new NotFoundError('Room not found.');
   }
 
   public async update(id: number, updateRoomDto: UpdateRoomDto) {
-    await this.roomsRepository.validateRoomId(id);
+    await this.findOne(id);
     return this.roomsRepository.update(id, updateRoomDto);
   }
 
   public async remove(id: number) {
-    await this.roomsRepository.validateRoomId(id);
+    await this.findOne(id);
     return this.roomsRepository.remove(id);
   }
 }

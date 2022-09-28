@@ -1,5 +1,5 @@
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateRoomDto } from '../dto/create-room.dto';
 import { UpdateRoomDto } from '../dto/update-room.dto';
 
@@ -28,13 +28,5 @@ export class RoomsRepository {
 
   public async remove(id: number) {
     return this.prismaService.room.delete({ where: { id } });
-  }
-
-  public async validateRoomId(id: number) {
-    const room = await this.prismaService.room.findUnique({
-      where: { id },
-    });
-    if (!room) throw new NotFoundException('Room not found.');
-    return id;
   }
 }
