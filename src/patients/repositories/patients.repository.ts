@@ -1,7 +1,7 @@
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePatientDto } from './../dto/create-patient.dto';
 import { UpdatePatientDto } from './../dto/update-patient.dto';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class PatientsRepository {
@@ -35,13 +35,5 @@ export class PatientsRepository {
 
   public async remove(id: number) {
     return this.prismaService.patient.delete({ where: { id } });
-  }
-
-  public async validatePatientId(id: number) {
-    const patient = await this.prismaService.patient.findUnique({
-      where: { id },
-    });
-    if (!patient) throw new NotFoundException('Patient not found.');
-    return id;
   }
 }
