@@ -15,6 +15,7 @@ async function bootstrap() {
     .setTitle('Hospital Management')
     .setDescription(`An API to manage a hospital's database.`)
     .setVersion('1.0')
+    .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'Token' })
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('documentation', app, document);
