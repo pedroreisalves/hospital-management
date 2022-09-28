@@ -27,6 +27,7 @@ export class ReceptionistsService {
   public async findOne(id: number) {
     const receptionist = await this.receptionistsRepository.findOne(id);
     if (!receptionist) throw new NotFoundError('Receptionist not found.');
+    return receptionist;
   }
 
   public async update(

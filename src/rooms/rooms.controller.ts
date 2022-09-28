@@ -1,3 +1,4 @@
+import { RoomEntity } from './entities/room.entity';
 import { AuthGuard } from '@nestjs/passport';
 import {
   Controller,
@@ -21,17 +22,19 @@ export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
   @Post()
-  public async create(@Body() createRoomDto: CreateRoomDto) {
+  public async create(
+    @Body() createRoomDto: CreateRoomDto,
+  ): Promise<RoomEntity> {
     return this.roomsService.create(createRoomDto);
   }
 
   @Get()
-  public async findAll() {
+  public async findAll(): Promise<RoomEntity[]> {
     return this.roomsService.findAll();
   }
 
   @Get(':id')
-  public async findOne(@Param('id') id: string) {
+  public async findOne(@Param('id') id: string): Promise<RoomEntity> {
     return this.roomsService.findOne(+id);
   }
 
@@ -39,12 +42,12 @@ export class RoomsController {
   public async update(
     @Param('id') id: string,
     @Body() updateRoomDto: UpdateRoomDto,
-  ) {
+  ): Promise<RoomEntity> {
     return this.roomsService.update(+id, updateRoomDto);
   }
 
   @Delete(':id')
-  public async remove(@Param('id') id: string) {
+  public async remove(@Param('id') id: string): Promise<{ message: string }> {
     await this.roomsService.remove(+id);
     return { message: `Room with ID #${id} has been removed.` };
   }

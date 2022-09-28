@@ -1,7 +1,7 @@
 import { UpdateSpecialtyDto } from './../dto/update-specialty.dto';
 import { CreateSpecialtyDto } from './../dto/create-specialty.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class SpecialtiesRepository {
@@ -16,10 +16,7 @@ export class SpecialtiesRepository {
   }
 
   public async findOne(id: number) {
-    return this.prismaService.specialty.findUnique({
-      where: { id },
-      include: { doctors: true },
-    });
+    return this.prismaService.specialty.findUnique({ where: { id } });
   }
 
   public async update(id: number, updateSpecialtyDto: UpdateSpecialtyDto) {

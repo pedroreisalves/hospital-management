@@ -22,6 +22,7 @@ export class DoctorsService {
   public async findOne(id: number) {
     const doctor = await this.doctorsRepostory.findOne(id);
     if (!doctor) throw new NotFoundError('Doctor not found.');
+    return doctor;
   }
 
   public async update(id: number, updateDoctorDto: UpdateDoctorDto) {

@@ -1,3 +1,4 @@
+import { MedicalAppointmentEntity } from './entities/medical-appointment.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateMedicalAppointmentDto } from './dto/update-medical-appointment.dto';
 import { CreateMedicalAppointmentDto } from './dto/create-medical-appointment.dto';
@@ -24,7 +25,7 @@ export class MedicalAppointmentsController {
   @Post()
   public async create(
     @Body() createMedicalAppointmentDto: CreateMedicalAppointmentDto,
-  ) {
+  ): Promise<MedicalAppointmentEntity> {
     return this.medicalAppointmentsService.create(createMedicalAppointmentDto);
   }
 
@@ -32,7 +33,7 @@ export class MedicalAppointmentsController {
   public async update(
     @Param('id') id: string,
     @Body() updateMedicalAppointmentDto: UpdateMedicalAppointmentDto,
-  ) {
+  ): Promise<MedicalAppointmentEntity> {
     return this.medicalAppointmentsService.update(
       +id,
       updateMedicalAppointmentDto,
@@ -40,7 +41,7 @@ export class MedicalAppointmentsController {
   }
 
   @Delete(':id')
-  public async remove(@Param('id') id: string) {
+  public async remove(@Param('id') id: string): Promise<{ message: string }> {
     await this.medicalAppointmentsService.remove(+id);
     return { message: `Medical appointment with ID #${id} has been removed.` };
   }

@@ -1,3 +1,4 @@
+import { SpecialtyEntity } from './entities/specialty.entity';
 import { AuthGuard } from '@nestjs/passport';
 import {
   Controller,
@@ -21,17 +22,19 @@ export class SpecialtiesController {
   constructor(private readonly specialtiesService: SpecialtiesService) {}
 
   @Post()
-  public async create(@Body() createSpecialtyDto: CreateSpecialtyDto) {
+  public async create(
+    @Body() createSpecialtyDto: CreateSpecialtyDto,
+  ): Promise<SpecialtyEntity> {
     return this.specialtiesService.create(createSpecialtyDto);
   }
 
   @Get()
-  public async findAll() {
+  public async findAll(): Promise<SpecialtyEntity[]> {
     return this.specialtiesService.findAll();
   }
 
   @Get(':id')
-  public async findOne(@Param('id') id: string) {
+  public async findOne(@Param('id') id: string): Promise<SpecialtyEntity> {
     return this.specialtiesService.findOne(+id);
   }
 
@@ -39,12 +42,12 @@ export class SpecialtiesController {
   public async update(
     @Param('id') id: string,
     @Body() updateSpecialtyDto: UpdateSpecialtyDto,
-  ) {
+  ): Promise<SpecialtyEntity> {
     return this.specialtiesService.update(+id, updateSpecialtyDto);
   }
 
   @Delete(':id')
-  public async remove(@Param('id') id: string) {
+  public async remove(@Param('id') id: string): Promise<{ message: string }> {
     await this.specialtiesService.remove(+id);
     return { message: `Specialty with ID #${id} has been removed.` };
   }

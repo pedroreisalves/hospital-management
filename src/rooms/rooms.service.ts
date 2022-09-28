@@ -19,6 +19,7 @@ export class RoomsService {
   public async findOne(id: number) {
     const room = await this.roomsRepository.findOne(id);
     if (!room) throw new NotFoundError('Room not found.');
+    return room;
   }
 
   public async update(id: number, updateRoomDto: UpdateRoomDto) {

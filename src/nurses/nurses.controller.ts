@@ -1,3 +1,4 @@
+import { NurseEntity } from './entities/nurse.entity';
 import { AuthGuard } from '@nestjs/passport';
 import {
   Controller,
@@ -21,17 +22,19 @@ export class NursesController {
   constructor(private readonly nursesService: NursesService) {}
 
   @Post()
-  public async create(@Body() createNurseDto: CreateNurseDto) {
+  public async create(
+    @Body() createNurseDto: CreateNurseDto,
+  ): Promise<NurseEntity> {
     return this.nursesService.create(createNurseDto);
   }
 
   @Get()
-  public async findAll() {
+  public async findAll(): Promise<NurseEntity[]> {
     return this.nursesService.findAll();
   }
 
   @Get(':id')
-  public async findOne(@Param('id') id: string) {
+  public async findOne(@Param('id') id: string): Promise<NurseEntity> {
     return this.nursesService.findOne(+id);
   }
 
@@ -39,12 +42,12 @@ export class NursesController {
   public async update(
     @Param('id') id: string,
     @Body() updateNurseDto: UpdateNurseDto,
-  ) {
+  ): Promise<NurseEntity> {
     return this.nursesService.update(+id, updateNurseDto);
   }
 
   @Delete(':id')
-  public async remove(@Param('id') id: string) {
+  public async remove(@Param('id') id: string): Promise<{ message: string }> {
     await this.nursesService.remove(+id);
     return { message: `Nurse with ID #${id} has been removed.` };
   }
