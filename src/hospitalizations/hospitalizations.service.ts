@@ -1,3 +1,4 @@
+import { NotFoundError } from './../common/errors/types/NotFoundError';
 import { HospitalizationsRepository } from './repositories/hospitalizations.repository';
 import { Injectable } from '@nestjs/common';
 import { CreateHospitalizationDto } from './dto/create-hospitalization.dto';
@@ -10,9 +11,6 @@ export class HospitalizationsService {
   ) {}
 
   public async create(createHospitalizationDto: CreateHospitalizationDto) {
-    const { patientId, roomId } = createHospitalizationDto;
-    await this.hospitalizationsRepository.validatePatientId(patientId);
-    await this.hospitalizationsRepository.validateRoomId(roomId);
     createHospitalizationDto.entryDate += 'T00:00:00.000Z';
     if (createHospitalizationDto.leaveDate)
       createHospitalizationDto.leaveDate += 'T00:00:00.000Z';
@@ -24,19 +22,18 @@ export class HospitalizationsService {
   }
 
   public async findOne(id: number) {
-    await this.hospitalizationsRepository.validateHospitalizationId(id);
-    return this.hospitalizationsRepository.findOne(id);
+    const hospitalization = await this.hospitalizationsRepository.findOne(id);
+    if (!hospitalization) {
+      throw new NotFoundError('Hospitalization not found.');
+    }
+    return hospitalization;
   }
 
   public async update(
     id: number,
     updateHospitalizationDto: UpdateHospitalizationDto,
   ) {
-    const { patientId, roomId } = updateHospitalizationDto;
-    await this.hospitalizationsRepository.validateHospitalizationId(id);
-    if (patientId)
-      await this.hospitalizationsRepository.validatePatientId(patientId);
-    if (roomId) await this.hospitalizationsRepository.validateRoomId(roomId);
+    await this.findOne(id);
     if (updateHospitalizationDto.entryDate)
       updateHospitalizationDto.entryDate += 'T00:00:00.000Z';
     if (updateHospitalizationDto.leaveDate)
@@ -45,7 +42,7 @@ export class HospitalizationsService {
   }
 
   public async remove(id: number) {
-    await this.hospitalizationsRepository.validateHospitalizationId(id);
+    await this.findOne(id);
     return this.hospitalizationsRepository.remove(id);
   }
 }
