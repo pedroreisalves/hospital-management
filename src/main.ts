@@ -1,3 +1,4 @@
+import { UnauthorizedInterceptor } from './common/errors/interceptors/unauthorized.interceptor';
 import { NotFoundInterceptor } from './common/errors/interceptors/not-found.interceptor';
 import { BadRequestInterceptor } from './common/errors/interceptors/bad-request.interceptor';
 import { DatabaseInterceptor } from './common/errors/interceptors/database.interceptor';
@@ -19,6 +20,7 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new ConflictInterceptor());
+  app.useGlobalInterceptors(new UnauthorizedInterceptor());
   app.useGlobalInterceptors(new BadRequestInterceptor());
   app.useGlobalInterceptors(new NotFoundInterceptor());
   app.useGlobalInterceptors(new DatabaseInterceptor());
