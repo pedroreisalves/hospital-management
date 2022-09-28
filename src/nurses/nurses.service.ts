@@ -1,3 +1,4 @@
+import { NotFoundError } from './../common/errors/types/NotFoundError';
 import { NursesRepository } from './repositories/nurses.repository';
 import { Injectable } from '@nestjs/common';
 import { CreateNurseDto } from './dto/create-nurse.dto';
@@ -11,7 +12,6 @@ export class NursesService {
   public async create(createNurseDto: CreateNurseDto) {
     createNurseDto.dateOfBirth += 'T00:00:00.000Z';
     createNurseDto.password = await bcrypt.hash(createNurseDto.password, 10);
-    await this.nursesRepository.validateNurseEmail(createNurseDto.email);
     return this.nursesRepository.create(createNurseDto);
   }
 
@@ -20,14 +20,13 @@ export class NursesService {
   }
 
   public async findOne(id: number) {
-    await this.nursesRepository.validateNurseId(id);
-    return this.nursesRepository.findOne(id);
+    const nurse = await this.nursesRepository.findOne(id);
+    if (!nurse) throw new NotFoundError('Nurse not found.');
+    return nurse;
   }
 
   public async update(id: number, updateNurseDto: UpdateNurseDto) {
-    await this.nursesRepository.validateNurseId(id);
-    if (updateNurseDto.email)
-      await this.nursesRepository.validateNurseEmail(updateNurseDto.email, id);
+    await this.findOne(id);
     if (updateNurseDto.password)
       updateNurseDto.password = await bcrypt.hash(updateNurseDto.password, 10);
     if (updateNurseDto.dateOfBirth)
@@ -36,7 +35,7 @@ export class NursesService {
   }
 
   public async remove(id: number) {
-    await this.nursesRepository.validateNurseId(id);
+    await this.findOne(id);
     return this.nursesRepository.remove(id);
   }
 }
