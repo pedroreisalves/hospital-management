@@ -1,3 +1,4 @@
+import { NotFoundError } from './../common/errors/types/NotFoundError';
 import { DoctorsRepository } from './repositories/doctors.repository';
 import { Injectable } from '@nestjs/common';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
@@ -9,10 +10,6 @@ export class DoctorsService {
   constructor(private readonly doctorsRepostory: DoctorsRepository) {}
 
   public async create(createDoctorDto: CreateDoctorDto) {
-    await this.doctorsRepostory.validateSpecialtyId(
-      createDoctorDto.specialtyId,
-    );
-    await this.doctorsRepostory.validateDoctorEmail(createDoctorDto.email);
     createDoctorDto.dateOfBirth += 'T00:00:00.000Z';
     createDoctorDto.password = await bcrypt.hash(createDoctorDto.password, 10);
     return this.doctorsRepostory.create(createDoctorDto);
@@ -23,16 +20,12 @@ export class DoctorsService {
   }
 
   public async findOne(id: number) {
-    await this.doctorsRepostory.validateDoctorId(id);
-    return this.doctorsRepostory.findOne(id);
+    const doctor = await this.doctorsRepostory.findOne(id);
+    if (!doctor) throw new NotFoundError('Doctor not found.');
   }
 
   public async update(id: number, updateDoctorDto: UpdateDoctorDto) {
-    await this.doctorsRepostory.validateDoctorId(id);
-    if (updateDoctorDto.specialtyId)
-      await this.doctorsRepostory.validateSpecialtyId(
-        updateDoctorDto.specialtyId,
-      );
+    await this.findOne(id);
     if (updateDoctorDto.password)
       updateDoctorDto.password = await bcrypt.hash(
         updateDoctorDto.password,
@@ -40,13 +33,11 @@ export class DoctorsService {
       );
     if (updateDoctorDto.dateOfBirth)
       updateDoctorDto.dateOfBirth += 'T00:00:00.000Z';
-    if (updateDoctorDto.email)
-      await this.doctorsRepostory.validateDoctorEmail(updateDoctorDto.email);
     return this.doctorsRepostory.update(id, updateDoctorDto);
   }
 
   public async remove(id: number) {
-    await this.doctorsRepostory.validateDoctorId(id);
+    await this.findOne(id);
     return this.doctorsRepostory.remove(id);
   }
 }
