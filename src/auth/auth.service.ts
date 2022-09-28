@@ -25,7 +25,7 @@ export class AuthService {
     ].findUnique({
       where: { id: jwtPayload.id },
     });
-    if (!user) throw new BadRequestException('Invalid token.');
+    if (!user) throw new BadRequestException('Token owner invalid.');
     return user;
   }
 
