@@ -12,8 +12,10 @@ import {
 import { HospitalizationsService } from './hospitalizations.service';
 import { CreateHospitalizationDto } from './dto/create-hospitalization.dto';
 import { UpdateHospitalizationDto } from './dto/update-hospitalization.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('hospitalizations')
+@ApiTags('Hospitalizations')
 @UseGuards(AuthGuard('jwt'))
 export class HospitalizationsController {
   constructor(

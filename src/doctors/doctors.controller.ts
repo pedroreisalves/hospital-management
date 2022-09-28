@@ -9,11 +9,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
 import { DoctorsService } from './doctors.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
 
 @Controller('doctors')
+@ApiTags('Doctors')
 @UseGuards(AuthGuard('jwt'))
 export class DoctorsController {
   constructor(private readonly doctorsService: DoctorsService) {}

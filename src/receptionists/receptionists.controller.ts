@@ -12,8 +12,10 @@ import {
 import { ReceptionistsService } from './receptionists.service';
 import { CreateReceptionistDto } from './dto/create-receptionist.dto';
 import { UpdateReceptionistDto } from './dto/update-receptionist.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('receptionists')
+@ApiTags('Receptionists')
 @UseGuards(AuthGuard('jwt'))
 export class ReceptionistsController {
   constructor(private readonly receptionistsService: ReceptionistsService) {}

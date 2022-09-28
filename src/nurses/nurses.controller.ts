@@ -12,9 +12,11 @@ import {
 import { NursesService } from './nurses.service';
 import { CreateNurseDto } from './dto/create-nurse.dto';
 import { UpdateNurseDto } from './dto/update-nurse.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('nurses')
 @UseGuards(AuthGuard('jwt'))
+@ApiTags('Nurses')
 export class NursesController {
   constructor(private readonly nursesService: NursesService) {}
 

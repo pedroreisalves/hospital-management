@@ -12,8 +12,10 @@ import {
 import { SpecialtiesService } from './specialties.service';
 import { CreateSpecialtyDto } from './dto/create-specialty.dto';
 import { UpdateSpecialtyDto } from './dto/update-specialty.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('specialties')
+@ApiTags('Specialties')
 @UseGuards(AuthGuard('jwt'))
 export class SpecialtiesController {
   constructor(private readonly specialtiesService: SpecialtiesService) {}

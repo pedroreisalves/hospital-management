@@ -11,8 +11,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { MedicalAppointmentsService } from './medical-appointments.service';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('medical-appointments')
+@ApiTags('Medical appointments')
 @UseGuards(AuthGuard('jwt'))
 export class MedicalAppointmentsController {
   constructor(

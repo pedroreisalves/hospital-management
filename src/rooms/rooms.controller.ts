@@ -12,8 +12,10 @@ import {
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('rooms')
+@ApiTags('Rooms')
 @UseGuards(AuthGuard('jwt'))
 export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}

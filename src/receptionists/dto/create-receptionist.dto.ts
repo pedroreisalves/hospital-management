@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Gender } from '@prisma/client';
 import {
   IsEmail,
@@ -23,6 +24,7 @@ export class CreateReceptionistDto {
   @MinLength(8)
   password: string;
 
+  @ApiProperty({ enum: Gender })
   @IsEnum(Gender)
   gender: Gender;
 

@@ -12,8 +12,10 @@ import {
 import { BillsService } from './bills.service';
 import { CreateBillDto } from './dto/create-bill.dto';
 import { UpdateBillDto } from './dto/update-bill.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('bills')
+@ApiTags('Bills')
 @UseGuards(AuthGuard('jwt'))
 export class BillsController {
   constructor(private readonly billsService: BillsService) {}
