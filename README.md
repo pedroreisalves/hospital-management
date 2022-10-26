@@ -12,6 +12,7 @@ docker-compose up -d
 - [Node.js](https://nodejs.org/en/)
 - [Typescript](https://www.typescriptlang.org/)
 - [NestJS](https://nestjs.com/)
+- [PostgreSQL](https://www.postgresql.org/)
 - [JWT Auth](https://jwt.io/)
 - [Swagger](https://swagger.io/)
 - [Prisma](https://www.prisma.io/)
